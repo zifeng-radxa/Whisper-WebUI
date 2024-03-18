@@ -51,7 +51,7 @@ class App:
             self.llm = TPUChatglm()
 
         if len(self.text) < 900:
-            prompt = f"请使用中文摘要下面这段文字：\n\n{self.text}\n" 
+            prompt = f"Please summarize the text in English\n\n{self.text}\n"
             res = ""
             for response, _ in self.llm.stream_predict(prompt, []):
                 res = response
@@ -71,7 +71,7 @@ class App:
             segments.append(current_segment)
             summaries = []
             for item in segments:
-                prompt = f"请使用中文摘要下面这段文字：\n\n{item}\n" 
+                prompt = f"Please summarize the text in English: \n\n{item}\n"
                 res = ""
                 for response, _ in self.llm.stream_predict(prompt, []):
                     res = response
@@ -84,7 +84,7 @@ class App:
             self.llm = TPUChatglm()
 
         if len(self.text) < 900:
-            prompt = f"请使用中文摘要下面这段文字：\n\n{self.text}\n" 
+            prompt = f"Please summarize the text in English: \n\n{self.text}\n"
             res = ""
             for response, _ in self.llm.stream_predict(prompt, []):
                 res = response
@@ -104,7 +104,7 @@ class App:
             segments.append(current_segment)
             summaries = []
             for item in segments:
-                prompt = f"请使用中文摘要下面这段文字：\n\n{item}\n" 
+                prompt = f"Please summarize the text in English: \n\n{item}\n"
                 res = ""
                 for response, _ in self.llm.stream_predict(prompt, []):
                     res = response
@@ -138,7 +138,7 @@ class App:
 
     def launch(self):
         with self.app:
-            gr.Markdown("# BMWhisper")
+            gr.Markdown("# BM1684M Whisper")
             with gr.Row():
                 with gr.Column():
                     gr.Markdown(elem_id="md_project")
@@ -147,47 +147,47 @@ class App:
                     with gr.Row():
                         input_file = gr.Files(type="filepath", label="Upload File here", file_types=["audio"])                
                     with gr.Row():
-                        btn_run = gr.Button("开始转录", variant="primary")
-                        clear_run = gr.Button("清除")
+                        btn_run = gr.Button("Start", variant="primary")
+                        clear_run = gr.Button("Clear")
                     with gr.Row():
-                        tb_indicator = gr.Textbox(label="转录文本", scale=8)
+                        tb_indicator = gr.Textbox(label="Audio content", scale=8)
                     with gr.Row():
-                        summary_run = gr.Button("摘要文本", visible=False)
+                        summary_run = gr.Button("Abstracts", visible=False)
                     with gr.Row():
-                        summary_indicator = gr.Textbox(label="文本摘要", scale=8, visible=False)
+                        summary_indicator = gr.Textbox(label="Abstracts result", scale=8, visible=False)
                     with gr.Row():
-                        download = gr.Files(label="已转录文档")
+                        download = gr.Files(label="Audio content file")
 
                     btn_run.click(fn=self.start_trans_file, inputs=[input_file], outputs=[tb_indicator, download, summary_run, summary_indicator])
                     clear_run.click(fn=self.clear, outputs=[tb_indicator, summary_indicator, input_file, download, summary_run, summary_indicator])
                     summary_run.click(fn=self.summary, outputs=[summary_indicator])
                 
-                with gr.TabItem("Select File From Serve Host"):
-                    with gr.Row():         
-                        with gr.Column(scale=4):
-                            dir_input = gr.Textbox(label="Check A Folder On The Host")
-                            dir_btn = gr.Button(value="Check")
-                        with gr.Column(scale=4):
-                            input_file = gr.Dropdown(label="File List", choices=[], value=None, interactive=True)
-                            enter_dir = gr.Button(value="Enter Folder")
-
-                    with gr.Row():
-                        btn_run = gr.Button("开始转录", variant="primary")
-                        clear_run = gr.Button("清除")
-                    with gr.Row():
-                        tb_indicator = gr.Textbox(label="转录文本", scale=8)
-                    with gr.Row():
-                        summary_run = gr.Button("摘要文本", visible=False)
-                    with gr.Row():
-                        summary_indicator = gr.Textbox(label="文本摘要", scale=8, visible=False)
-                    with gr.Row():
-                        download = gr.Files(label="已转录文档")
-                    
-                    dir_btn.click(fn=self.dir_click, inputs=[dir_input], outputs=[input_file])
-                    enter_dir.click(fn=self.enter_dir, inputs=[dir_input, input_file], outputs=[dir_input, input_file])
-                    btn_run.click(fn=self.start_trans_file_from_host, inputs=[dir_input, input_file], outputs=[tb_indicator, download, summary_run, summary_indicator])
-                    clear_run.click(fn=self.clear1, outputs=[tb_indicator, summary_indicator, input_file, download, summary_run, summary_indicator])
-                    summary_run.click(fn=self.summary1, outputs=[summary_indicator])
+                # with gr.TabItem("Select File From Serve Host"):
+                #     with gr.Row():
+                #         with gr.Column(scale=4):
+                #             dir_input = gr.Textbox(label="Check A Folder On The Host")
+                #             dir_btn = gr.Button(value="Check")
+                #         with gr.Column(scale=4):
+                #             input_file = gr.Dropdown(label="File List", choices=[], value=None, interactive=True)
+                #             enter_dir = gr.Button(value="Enter Folder")
+                #
+                #     with gr.Row():
+                #         btn_run = gr.Button("开始转录", variant="primary")
+                #         clear_run = gr.Button("清除")
+                #     with gr.Row():
+                #         tb_indicator = gr.Textbox(label="转录文本", scale=8)
+                #     with gr.Row():
+                #         summary_run = gr.Button("摘要文本", visible=False)
+                #     with gr.Row():
+                #         summary_indicator = gr.Textbox(label="文本摘要", scale=8, visible=False)
+                #     with gr.Row():
+                #         download = gr.Files(label="已转录文档")
+                #
+                #     dir_btn.click(fn=self.dir_click, inputs=[dir_input], outputs=[input_file])
+                #     enter_dir.click(fn=self.enter_dir, inputs=[dir_input, input_file], outputs=[dir_input, input_file])
+                #     btn_run.click(fn=self.start_trans_file_from_host, inputs=[dir_input, input_file], outputs=[tb_indicator, download, summary_run, summary_indicator])
+                #     clear_run.click(fn=self.clear1, outputs=[tb_indicator, summary_indicator, input_file, download, summary_run, summary_indicator])
+                #     summary_run.click(fn=self.summary1, outputs=[summary_indicator])
 
 
         # Launch the app with optional gradio settings
