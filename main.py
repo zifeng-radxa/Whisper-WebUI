@@ -51,7 +51,7 @@ class App:
             self.llm = TPUChatglm()
 
         if len(self.text) < 900:
-            prompt = f"Please summarize the text in English\n\n{self.text}\n"
+            prompt = f"请使用中文摘要以下文本： \n\n{self.text}\n"
             res = ""
             for response, _ in self.llm.stream_predict(prompt, []):
                 res = response
